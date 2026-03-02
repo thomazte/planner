@@ -683,11 +683,6 @@
             Lançe ganhos e gastos, veja o <span class="nowrap">%</span> do que já gastou, acompanhe grupos e calcule quanto juntar por mês para sua meta.
             Tudo fica salvo neste computador (sem internet).
           </p>
-          <p class="pageFooter">
-            <span class="pageFooter-version">v1.0</span>
-            <span class="pageFooter-sep">·</span>
-            <span class="pageFooter-credit">Desenvolvido por Thomaz Arthur</span>
-          </p>
         </div>
         <div class="headerRight">
           <div class="themeIconWrap">
@@ -1065,6 +1060,12 @@
           </div>
         </section>
       </div>
+
+      <footer class="pageFooter">
+        <span class="pageFooter-version">v1.0</span>
+        <span class="pageFooter-sep">·</span>
+        <span class="pageFooter-credit">Desenvolvido por Thomaz Arthur</span>
+      </footer>
     </div>
 
     <div class="modal-overlay" id="editModal" aria-hidden="true">
@@ -1928,8 +1929,19 @@
           const merged = { ...defaultData(), ...imported };
           merged.groups = Array.isArray(merged.groups) && merged.groups.length ? merged.groups : [...DEFAULT_GROUPS];
           merged.goalGroups = Array.isArray(merged.goalGroups) && merged.goalGroups.length ? merged.goalGroups : [...DEFAULT_GOAL_GROUPS];
-          merged.incomes = Array.isArray(merged.incomes) ? merged.incomes : [];
-          merged.expenses = Array.isArray(merged.expenses) ? merged.expenses : [];
+          merged.incomes = Array.isArray(merged.incomes) ? merged.incomes.map((i) => ({
+            id: String(i.id || uid()),
+            date: String(i.date || ""),
+            desc: String(i.desc || ""),
+            amount: Number(i.amount) || 0,
+          })) : [];
+          merged.expenses = Array.isArray(merged.expenses) ? merged.expenses.map((e) => ({
+            id: String(e.id || uid()),
+            date: String(e.date || ""),
+            desc: String(e.desc || ""),
+            group: String(e.group || "Outros").trim() || "Outros",
+            amount: Number(e.amount) || 0,
+          })) : [];
           merged.notes = typeof merged.notes === "string" ? merged.notes : "";
           merged.currency = typeof merged.currency === "string" ? merged.currency : "BRL";
           merged.goal = merged.goal && typeof merged.goal === "object" ? { name: "", amount: null, months: null, ...merged.goal } : { name: "", amount: null, months: null };
@@ -1959,7 +1971,10 @@
           data = merged;
           saveData();
           el.currencySelect.value = data.currency || "BRL";
-          showToast("Importado com sucesso.");
+          const nIncome = data.incomes.length;
+          const nExpense = data.expenses.length;
+          const nGoals = (data.goals || []).length;
+          showToast(nIncome || nExpense || nGoals ? `Importado: ${nIncome} ganhos, ${nExpense} gastos, ${nGoals} meta(s).` : "Importado (arquivo sem lançamentos).");
           rerenderAll();
         }
 
@@ -2151,7 +2166,6 @@
           el.importBtn.addEventListener("click", () => el.importFile.click());
           el.importFile.addEventListener("change", async () => {
             const file = el.importFile.files && el.importFile.files[0];
-            el.importFile.value = "";
             if (!file) return;
             try {
               await importJSONFile(file);
@@ -2159,6 +2173,7 @@
               showToast("Falha ao importar. Verifique o arquivo.");
               console.error(e);
             }
+            el.importFile.value = "";
           });
 
           el.resetAllBtn.addEventListener("click", () => {
