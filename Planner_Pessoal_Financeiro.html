@@ -96,10 +96,23 @@
         color: inherit;
       }
 
+      /* Área segura para notch/Dynamic Island (iOS) e bordas em celulares */
+      :root {
+        --safe-top: env(safe-area-inset-top, 0px);
+        --safe-right: env(safe-area-inset-right, 0px);
+        --safe-bottom: env(safe-area-inset-bottom, 0px);
+        --safe-left: env(safe-area-inset-left, 0px);
+      }
+
       .container {
         max-width: 1200px;
         margin: 0 auto;
-        padding: 26px 18px 70px;
+        padding: calc(20px + var(--safe-top)) calc(18px + var(--safe-right)) calc(70px + var(--safe-bottom)) calc(18px + var(--safe-left));
+      }
+      @media (min-width: 768px) {
+        .container {
+          padding: calc(26px + var(--safe-top)) calc(24px + var(--safe-right)) calc(70px + var(--safe-bottom)) calc(24px + var(--safe-left));
+        }
       }
 
       header {
@@ -540,8 +553,8 @@
 
       .toast {
         position: fixed;
-        right: 18px;
-        bottom: 18px;
+        right: calc(18px + var(--safe-right));
+        bottom: calc(18px + var(--safe-bottom));
         background: rgba(0, 0, 0, 0.70);
         color: white;
         border: 1px solid rgba(255, 255, 255, 0.18);

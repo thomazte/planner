@@ -12,7 +12,7 @@
 https://thomazte.github.io/planner/Planner_Pessoal_Financeiro.html
 ```
 
-Quem receber: abre o link no navegador do celular → se quiser, toca em **Compartilhar** → **Adicionar à Tela de Início** e o planner vira um ícone na tela, como um app.
+Quem receber: abre o link no navegador do celular → se quiser, toca em **Compartilhar** → **Adicionar à Tela de Início** e o planner vira um ícone na tela, como um app. O layout se adapta à tela (notch, Dynamic Island e bordas) em iPhone e Android.
 
 ---
 
