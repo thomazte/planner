@@ -1,5 +1,21 @@
 ## Planner Pessoal e Financeiro
 
+### Compartilhar com quem usa celular (iOS ou Android)
+
+**Não mande o arquivo .html** — no celular abrir arquivo não funciona direito e os dados não salvam.
+
+**Mande este link.** A pessoa só abre no Safari (iPhone) ou no Chrome (Android). Ninguém precisa saber o que é GitHub.
+
+**Link para copiar e enviar (WhatsApp, mensagem, e-mail):**
+
+```
+https://thomazte.github.io/planner/Planner_Pessoal_Financeiro.html
+```
+
+Quem receber: abre o link no navegador do celular → se quiser, toca em **Compartilhar** → **Adicionar à Tela de Início** e o planner vira um ícone na tela, como um app.
+
+---
+
 ### Link para abrir o planner (GitHub Pages)
 
 Use este link no navegador ou no celular (não use o link do repositório):
