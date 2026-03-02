@@ -1,0 +1,11 @@
+{
+  "name": "Planner Pessoal e Financeiro",
+  "short_name": "Planner Financeiro",
+  "description": "Controle de ganhos, gastos e metas. Tudo salvo no navegador.",
+  "start_url": "./Planner_Pessoal_Financeiro.html",
+  "display": "standalone",
+  "orientation": "any",
+  "lang": "pt-BR",
+  "theme_color": "#ffffff",
+  "background_color": "#ffffff"
+}
