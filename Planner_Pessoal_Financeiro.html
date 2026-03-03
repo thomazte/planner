@@ -8,6 +8,7 @@
     <meta name="apple-mobile-web-app-title" content="Planner Financeiro" />
     <meta name="theme-color" content="#ffffff" id="metaThemeColor" />
     <link rel="manifest" href="manifest.json" />
+    <link rel="apple-touch-icon" href="apple-touch-icon.png" />
     <title>Planner Pessoal e Financeiro</title>
     <style>
       :root {
@@ -77,6 +78,7 @@
         background: var(--bg);
         color: var(--text);
         line-height: 1.35;
+        overflow-x: hidden;
       }
 
       html[data-theme="light"] body {
@@ -108,6 +110,7 @@
         max-width: 1200px;
         margin: 0 auto;
         padding: calc(20px + var(--safe-top)) calc(18px + var(--safe-right)) calc(70px + var(--safe-bottom)) calc(18px + var(--safe-left));
+        overflow-x: hidden;
       }
       @media (min-width: 768px) {
         .container {
@@ -312,6 +315,7 @@
       .cardHeader {
         padding: 14px 16px 10px;
         display: flex;
+        flex-wrap: wrap;
         align-items: center;
         justify-content: space-between;
         gap: 12px;
@@ -342,6 +346,18 @@
       @media (max-width: 980px) {
         .kpis {
           grid-template-columns: 1fr 1fr;
+        }
+      }
+      @media (max-width: 640px) {
+        .kpis.kpis--goal {
+          grid-template-columns: 1fr !important;
+        }
+        .kpi {
+          min-height: auto;
+          padding: 10px;
+        }
+        .kpi .value {
+          font-size: 0.9375rem;
         }
       }
 
@@ -405,6 +421,25 @@
           grid-column: span 2;
         }
       }
+      /* Mobile: formulários em uma coluna para não cortar campos/botões */
+      @media (max-width: 640px) {
+        .formGrid {
+          grid-template-columns: 1fr !important;
+          gap: 12px;
+        }
+        .formGrid .span2 {
+          grid-column: 1 !important;
+        }
+        .formGrid .field input,
+        .formGrid .field select,
+        .formGrid .field button {
+          width: 100%;
+          min-width: 0;
+        }
+        .cardBody {
+          padding: 12px 14px 14px;
+        }
+      }
       .field {
         display: grid;
         gap: 6px;
@@ -420,9 +455,12 @@
         border-radius: var(--radius2);
         overflow: hidden;
         background: rgba(0, 0, 0, 0.15);
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
       }
       table {
         width: 100%;
+        min-width: 280px;
         border-collapse: collapse;
         font-size: 0.8125rem;
       }
@@ -431,6 +469,11 @@
         padding: 10px 10px;
         border-bottom: 1px solid var(--border);
         vertical-align: top;
+      }
+      th:last-child,
+      td:last-child {
+        min-width: 72px;
+        white-space: nowrap;
       }
       th {
         text-align: left;
@@ -455,6 +498,11 @@
       td.cell-name {
         font-weight: var(--font-name);
         color: var(--text);
+      }
+      @media (max-width: 640px) {
+        th, td {
+          padding: 8px 6px;
+        }
       }
       .chip {
         display: inline-flex;
@@ -501,6 +549,7 @@
       }
       .groupRowTop {
         display: flex;
+        flex-wrap: wrap;
         align-items: baseline;
         justify-content: space-between;
         gap: 10px;
@@ -549,6 +598,21 @@
         display: flex;
         flex-wrap: wrap;
         gap: 10px;
+      }
+      @media (max-width: 640px) {
+        .footerActions {
+          flex-direction: column;
+          align-items: stretch;
+        }
+        .footerActions .left {
+          flex-direction: column;
+        }
+        .footerActions .left button,
+        .footerActions .left input,
+        .footerActions > div > button {
+          width: 100%;
+          min-width: 0;
+        }
       }
 
       .toast {
@@ -685,9 +749,44 @@
         margin: 0 6px;
         opacity: 0.8;
       }
+
+      .installHintBanner {
+        display: none;
+        padding: 10px calc(18px + var(--safe-left)) 10px calc(18px + var(--safe-right));
+        background: var(--chip);
+        border-bottom: 1px solid var(--border);
+        font-size: 0.8125rem;
+        color: var(--chipText);
+        align-items: center;
+        justify-content: center;
+        gap: 12px;
+        flex-wrap: wrap;
+        text-align: center;
+      }
+      .installHintBanner.show {
+        display: flex;
+      }
+      .installHintBanner .hintText {
+        flex: 1;
+        min-width: 200px;
+      }
+      .installHintBanner .dismissBtn {
+        padding: 6px 12px;
+        font-size: 0.75rem;
+        border-radius: 8px;
+        background: rgba(255,255,255,0.2);
+        border: 1px solid rgba(255,255,255,0.3);
+        color: inherit;
+        cursor: pointer;
+        white-space: nowrap;
+      }
     </style>
   </head>
   <body>
+    <div class="installHintBanner" id="installHintBanner" role="complementary" aria-label="Dica para usar como app">
+      <span class="hintText">📱 Use como app no celular: toque em <strong>Compartilhar</strong> e depois em <strong>Adicionar à tela inicial</strong>.</span>
+      <button type="button" class="dismissBtn" id="installHintDismiss">Entendi</button>
+    </div>
     <div class="container">
       <header>
         <div class="titleWrap">
@@ -992,7 +1091,7 @@
             </div>
 
             <div style="height: 12px"></div>
-            <div class="kpis" style="grid-template-columns: 1fr 1fr 1fr">
+            <div class="kpis kpis--goal" style="grid-template-columns: 1fr 1fr 1fr">
               <div class="kpi">
                 <div class="label">Precisa juntar por mês</div>
                 <div class="value" id="goalPerMonth">—</div>
@@ -1075,7 +1174,7 @@
       </div>
 
       <footer class="pageFooter">
-        <span class="pageFooter-version">v1.0</span>
+        <span class="pageFooter-version">v1.0.1</span>
         <span class="pageFooter-sep">·</span>
         <span class="pageFooter-credit">Desenvolvido por Thomaz Arthur</span>
       </footer>
@@ -2231,6 +2330,18 @@
 
           el.chipMonth.textContent = currentMonthLabel();
           rerenderAll();
+
+          var installBanner = document.getElementById("installHintBanner");
+          var installDismiss = document.getElementById("installHintDismiss");
+          if (installBanner && installDismiss) {
+            if (window.matchMedia("(max-width: 768px)").matches && !localStorage.getItem("ppf:hideInstallHint")) {
+              installBanner.classList.add("show");
+            }
+            installDismiss.addEventListener("click", function() {
+              localStorage.setItem("ppf:hideInstallHint", "1");
+              installBanner.classList.remove("show");
+            });
+          }
         }
 
         init();

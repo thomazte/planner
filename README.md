@@ -8,6 +8,14 @@
 
 **Link para copiar e enviar (WhatsApp, mensagem, e-mail):**
 
+Página inicial (recomendado — tem botão “Abrir o app” e QR code para celular):
+
+```
+https://thomazte.github.io/planner/
+```
+
+Ou link direto do app:
+
 ```
 https://thomazte.github.io/planner/Planner_Pessoal_Financeiro.html
 ```
