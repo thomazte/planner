@@ -49,7 +49,7 @@ No iPhone/Android, tocar no `.html` no app Arquivos não abre no navegador como 
 
 ### Publicar no GitHub Pages (para usar no celular)
 
-1. Crie um repositório no GitHub e suba a pasta do projeto (`.html` e `manifest.json`).
+1. Crie um repositório no GitHub e suba a pasta do projeto (`.html`, `manifest.json` e `version.json`).
 2. No repositório: **Settings** → **Pages** → Source: **Deploy from a branch** → branch **main**, pasta **/(root)** → Save.
 3. O endereço será: `https://seu-usuario.github.io/nome-do-repo/Planner_Pessoal_Financeiro.html`
 
